@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>اختبار تجريبي - الدالة التربيعية ومعادلاتها - الصف العاشر</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<style>
+:root{
+  --green:#4a8f1f; --green-d:#356b14; --green-l:#eaf4e0;
+  --maroon:#8b1a3a; --bg:#f6f8f3; --card:#fff; --ink:#1d2a14; --muted:#5d6b52;
+  --line:#d6e2c8; --ok:#2e8b3d; --bad:#c0392b;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Tajawal',Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.8}
+header{background:linear-gradient(90deg,var(--green),var(--green-d));color:#fff;padding:18px 16px;text-align:center}
+header h1{margin:0;font-size:1.35rem;font-weight:800}
+header p{margin:4px 0 0;font-size:.95rem;opacity:.92}
+main{max-width:760px;margin:0 auto;padding:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(40,70,20,.06)}
+.badge{display:inline-block;background:var(--maroon);color:#fff;border-radius:8px;padding:2px 14px;font-weight:700;font-size:.95rem}
+.sec{display:inline-block;background:var(--green-l);color:var(--green-d);border-radius:8px;padding:2px 12px;font-size:.88rem;font-weight:700;margin-inline-start:8px}
+.qtext{font-size:1.15rem;font-weight:500;margin:14px 0}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+@media(max-width:560px){.opts{grid-template-columns:1fr}}
+.opt{display:flex;align-items:center;gap:10px;text-align:right;background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px 12px;font-family:inherit;font-size:1.05rem;cursor:pointer;color:var(--ink);transition:.15s}
+.opt:hover{border-color:var(--green);background:#fafdf6}
+.opt.sel{border-color:var(--green);background:var(--green-l)}
+.opt .L{flex:none;width:28px;height:28px;border-radius:7px;background:var(--green-l);color:var(--green-d);font-weight:800;display:flex;align-items:center;justify-content:center;font-family:Arial,sans-serif;font-size:.9rem;border:1px solid var(--green)}
+.opt.sel .L{background:var(--green);color:#fff}
+.opt .T{flex:1;direction:rtl}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+button.btn{font-family:inherit;font-size:1rem;font-weight:700;border:none;border-radius:10px;padding:10px 22px;cursor:pointer;background:var(--green);color:#fff}
+button.btn:hover{background:var(--green-d)}
+button.btn.alt{background:#fff;color:var(--green-d);border:2px solid var(--green)}
+button.btn:disabled{opacity:.4;cursor:not-allowed}
+.progress{height:10px;background:#e3ecd8;border-radius:6px;overflow:hidden;margin-bottom:8px}
+.progress>div{height:100%;background:var(--green);transition:width .25s}
+.pinfo{display:flex;justify-content:space-between;color:var(--muted);font-size:.9rem;margin-bottom:12px}
+.dots{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.dot{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:#fff;font-family:inherit;font-size:.82rem;cursor:pointer}
+.dot.ans{background:var(--green-l);border-color:var(--green)}
+.dot.cur{outline:2px solid var(--maroon)}
+.figure{display:flex;justify-content:center;margin:10px 0}
+.figure svg{max-width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:10px}
+table.vt{border-collapse:collapse;margin:10px auto;direction:ltr}
+table.vt td,table.vt th{border:1px solid #333;padding:6px 16px;text-align:center;min-width:44px}
+table.vt th{background:var(--green-l)}
+input.name{width:100%;font-family:inherit;font-size:1.05rem;padding:10px 12px;border:2px solid var(--line);border-radius:10px;margin:8px 0 16px}
+.score{text-align:center}
+.score .big{font-size:3rem;font-weight:800;color:var(--green-d);line-height:1.2}
+.score .pct{font-size:1.2rem;color:var(--muted)}
+.rv{border-inline-start:6px solid var(--line)}
+.rv.ok{border-inline-start-color:var(--ok)}
+.rv.no{border-inline-start-color:var(--bad)}
+.tag{font-weight:700}
+.tag.ok{color:var(--ok)} .tag.no{color:var(--bad)}
+.hint{background:var(--green-l);border-radius:10px;padding:8px 12px;margin-top:10px;font-size:.98rem}
+.hide{display:none}
+/* الصيغ الرياضية: من اليسار إلى اليمين ومعزولة عن اتجاه النص العربي */
+.katex{direction:ltr !important;unicode-bidi:isolate !important;text-align:left}
+.katex-display{direction:ltr !important;unicode-bidi:isolate;text-align:center}
+.katex .katex-html,.katex .base{direction:ltr}
+.opt .T .katex{display:inline-block}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:14px 0}
+.summary div{background:var(--green-l);border-radius:10px;padding:8px;text-align:center;font-weight:700}
+.rowbtn{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+@media print{header,.rowbtn,.nav{display:none}.card{box-shadow:none;break-inside:avoid}}
+</style>
+</head>
+<body>
+<header>
+  <h1>اختبار تجريبي: الدالة التربيعية ومعادلاتها</h1>
+  <p>الصف العاشر • منتصف الفصل الأول • 27 سؤالاً من نوع الاختيار من متعدد</p>
+</header>
+<main id="app"></main>
+
+<script>
+/* ===================== بيانات الأسئلة ===================== */
+function graphSVG(f, xr, yr){
+  const W=340,H=270,P=26;
+  const sx=x=>P+(x-xr[0])/(xr[1]-xr[0])*(W-2*P);
+  const sy=y=>H-P-(y-yr[0])/(yr[1]-yr[0])*(H-2*P);
+  let s='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="التمثيل البياني للدالة">';
+  for(let x=xr[0];x<=xr[1];x++){
+    s+='<line x1="'+sx(x)+'" y1="'+sy(yr[0])+'" x2="'+sx(x)+'" y2="'+sy(yr[1])+'" stroke="#e1e8d8"/>';
+  }
+  for(let y=yr[0];y<=yr[1];y++){
+    s+='<line x1="'+sx(xr[0])+'" y1="'+sy(y)+'" x2="'+sx(xr[1])+'" y2="'+sy(y)+'" stroke="#e1e8d8"/>';
+  }
+  s+='<line x1="'+sx(xr[0])+'" y1="'+sy(0)+'" x2="'+sx(xr[1])+'" y2="'+sy(0)+'" stroke="#333" stroke-width="1.5"/>';
+  s+='<line x1="'+sx(0)+'" y1="'+sy(yr[0])+'" x2="'+sx(0)+'" y2="'+sy(yr[1])+'" stroke="#333" stroke-width="1.5"/>';
+  for(let x=xr[0];x<=xr[1];x++){ if(x!==0) s+='<text x="'+sx(x)+'" y="'+(sy(0)+12)+'" font-size="10" text-anchor="middle" fill="#333" font-family="Arial">'+x+'</text>'; }
+  for(let y=yr[0];y<=yr[1];y++){ if(y!==0) s+='<text x="'+(sx(0)-4)+'" y="'+(sy(y)+3)+'" font-size="10" text-anchor="end" fill="#333" font-family="Arial">'+y+'</text>'; }
+  s+='<text x="'+(sx(xr[1])-2)+'" y="'+(sy(0)-5)+'" font-size="11" text-anchor="end" font-family="Arial" font-style="italic">x</text>';
+  s+='<text x="'+(sx(0)+6)+'" y="'+(sy(yr[1])+10)+'" font-size="11" font-family="Arial" font-style="italic">y</text>';
+  let pts=[];
+  for(let x=xr[0];x<=xr[1]+1e-9;x+=0.05){
+    const y=f(x);
+    if(y>=yr[0]-0.5 && y<=yr[1]+0.5) pts.push(sx(x).toFixed(1)+','+sy(y).toFixed(1));
+  }
+  s+='<polyline points="'+pts.join(' ')+'" fill="none" stroke="#8b1a3a" stroke-width="2.5"/>';
+  return s+'</svg>';
+}
+
+const Q = [
+/* القسم 1: التحويلات */
+{sec:'التحويلات',
+ t:String.raw`أي الدوال التالية <b>أقل اتساعاً</b> من $f(x)=x^2$ ومفتوحة <b>للأعلى</b>؟`,
+ o:[String.raw`$0.3x^2$`,String.raw`$-3x^2$`,String.raw`$3x^2$`,String.raw`$-0.3x^2$`], a:2,
+ h:String.raw`أقل اتساعاً يعني $|a|>1$، ومفتوحة للأعلى يعني $a>0$، إذن $a=3$.`},
+{sec:'التحويلات',
+ t:String.raw`أي الدوال التالية <b>أكثر اتساعاً</b> من $f(x)=x^2$ ومفتوحة <b>للأسفل</b>؟`,
+ o:[String.raw`$-0.4x^2$`,String.raw`$-5x^2$`,String.raw`$0.4x^2$`,String.raw`$5x^2$`], a:0,
+ h:String.raw`أكثر اتساعاً يعني $|a|<1$، ومفتوحة للأسفل يعني $a<0$، إذن $a=-0.4$.`},
+{sec:'التحويلات',
+ t:String.raw`أي الدوال التالية <b>أقل اتساعاً</b> من $f(x)=x^2$ ومفتوحة <b>للأسفل</b>؟`,
+ o:[String.raw`$-0.2x^2$`,String.raw`$-6x^2$`,String.raw`$6x^2$`,String.raw`$0.2x^2$`], a:1,
+ h:String.raw`أقل اتساعاً يعني $|a|>1$، وللأسفل يعني $a<0$، إذن $a=-6$.`},
+{sec:'التحويلات',
+ t:String.raw`ما وجه المقارنة بين التمثيل البياني للدالة $g(x)=x^2-4$ والتمثيل البياني للدالة $f(x)=x^2$؟`,
+ o:['إزاحة 4 وحدات للأعلى','إزاحة 4 وحدات للأسفل','إزاحة 4 وحدات لليسار','إزاحة 4 وحدات لليمين'], a:1,
+ h:String.raw`طرح عدد من الدالة يعني إزاحة رأسية للأسفل بمقدار هذا العدد.`},
+{sec:'التحويلات',
+ t:String.raw`ما وجه المقارنة بين التمثيل البياني للدالة $g(x)=(x-3)^2+2$ والتمثيل البياني للدالة $f(x)=x^2$؟`,
+ o:['3 وحدات لليسار ووحدتان للأعلى','3 وحدات لليمين ووحدتان للأسفل','3 وحدات لليمين ووحدتان للأعلى','3 وحدات لليسار ووحدتان للأسفل'], a:2,
+ h:String.raw`$(x-h)$ تعني إزاحة $h$ لليمين، و$+k$ تعني إزاحة $k$ للأعلى. الرأس $(3,2)$.`},
+
+/* القسم 2: دالة مرسومة والحلول */
+{sec:'دالة مرسومة والحلول',
+ t:String.raw`اعتماداً على الرسم البياني المجاور، ما حلول المعادلة التربيعية المرتبطة به؟`,
+ fig:()=>graphSVG(x=>x*x+2*x-3,[-5,3],[-5,4]),
+ o:[String.raw`$\{3,-1\}$`,String.raw`$\{-3,-1\}$`,String.raw`$\{-3,1\}$`,String.raw`$\{3,1\}$`], a:2,
+ h:String.raw`حلول المعادلة هي الإحداثيات $x$ لنقاط تقاطع المنحنى مع المحور $x$: $x=-3$ و$x=1$.`},
+{sec:'دالة مرسومة والحلول',
+ t:String.raw`اعتماداً على الرسم البياني المجاور، ما حلول المعادلة التربيعية المرتبطة به؟`,
+ fig:()=>graphSVG(x=>-x*x+4*x,[-2,6],[-3,5]),
+ o:[String.raw`$\{0,4\}$`,String.raw`$\{2,4\}$`,String.raw`$\{0,2\}$`,String.raw`$\{-4,0\}$`], a:0,
+ h:String.raw`المنحنى يقطع المحور $x$ عند $x=0$ وعند $x=4$ (الرأس $(2,4)$ ليس حلاً).`},
+
+/* القسم 3: معادلة محللة لقوسين مع معامل */
+{sec:'معادلة محللة إلى قوسين',
+ t:String.raw`ما حلول المعادلة $(3x-6)(2x+8)=0$؟`,
+ o:[String.raw`$\{-2,4\}$`,String.raw`$\{6,8\}$`,String.raw`$\{3,2\}$`,String.raw`$\{2,-4\}$`], a:3,
+ h:String.raw`$3x-6=0\Rightarrow x=2$ و$2x+8=0\Rightarrow x=-4$.`},
+{sec:'معادلة محللة إلى قوسين',
+ t:String.raw`ما حلول المعادلة $(2x+1)(x-5)=0$؟`,
+ o:[String.raw`$\left\{\tfrac12,5\right\}$`,String.raw`$\left\{-\tfrac12,5\right\}$`,String.raw`$\{-2,5\}$`,String.raw`$\{2,-5\}$`], a:1,
+ h:String.raw`$2x+1=0\Rightarrow x=-\tfrac12$ و$x-5=0\Rightarrow x=5$.`},
+
+/* القسم 4: تبسيط الجذور وضرب جذرين */
+{sec:'تبسيط الجذور',
+ t:String.raw`أي المقادير التالية يكافئ $\sqrt{49x^6}$ (حيث $x\ge 0$)؟`,
+ o:[String.raw`$7x^3$`,String.raw`$7x^6$`,String.raw`$49x^3$`,String.raw`$7x^2$`], a:0,
+ h:String.raw`$\sqrt{49}=7$ و$\sqrt{x^6}=x^3$.`},
+{sec:'ضرب جذرين',
+ t:String.raw`أي المقادير التالية يكافئ $\sqrt{2x}\times\sqrt{18x}$ ؟`,
+ o:[String.raw`$6x^2$`,String.raw`$36x$`,String.raw`$6x$`,String.raw`$6\sqrt{x}$`], a:2,
+ h:String.raw`$\sqrt{2x\cdot 18x}=\sqrt{36x^2}=6x$.`},
+{sec:'ضرب جذرين',
+ t:String.raw`أي المقادير التالية يكافئ $\sqrt{12x^3}\times\sqrt{3x}$ ؟`,
+ o:[String.raw`$36x^4$`,String.raw`$6x^2$`,String.raw`$6x^4$`,String.raw`$6x$`], a:1,
+ h:String.raw`$\sqrt{36x^4}=6x^2$.`},
+
+/* القسم 5: قيمة c لمربع كامل */
+{sec:'المربع الكامل',
+ t:String.raw`ما قيمة الثابت $c$ التي تجعل المقدار $x^2+12x+c$ مربعاً كاملاً؟`,
+ o:['12','6','36','144'], a:2,
+ h:String.raw`$c=\left(\tfrac{b}{2}\right)^2=\left(\tfrac{12}{2}\right)^2=36$.`},
+{sec:'المربع الكامل',
+ t:String.raw`ما قيمة الثابت $c$ التي تجعل المقدار $x^2-10x+c$ مربعاً كاملاً؟`,
+ o:['25','$-25$','100','10'], a:0,
+ h:String.raw`$c=\left(\tfrac{-10}{2}\right)^2=25$.`},
+
+/* القسم 6: أقصى ارتفاع */
+{sec:'أقصى ارتفاع',
+ t:String.raw`تمثل الدالة $f(x)=-5(x-2)^2+20$ ارتفاع كرة بالأمتار بعد $x$ ثانية من رميها.<br>ما أقصى ارتفاع تصل إليه الكرة؟`,
+ o:['2 م','20 م','$-5$ م','25 م'], a:1,
+ h:String.raw`الصيغة الرأسية $a(x-h)^2+k$: القيمة العظمى $k=20$.`},
+{sec:'أقصى ارتفاع',
+ t:String.raw`في الدالة $f(x)=-5(x-2)^2+20$ (ارتفاع الكرة بعد $x$ ثانية): بعد كم ثانية من رميها بلغت هذا الارتفاع؟`,
+ o:['20','5','2','4'], a:2,
+ h:String.raw`الرأس $(h,k)=(2,20)$، فالارتفاع الأقصى يتحقق عند $x=h=2$ ثانية.`},
+{sec:'أقصى ارتفاع',
+ t:String.raw`إذا مثّلنا الدالة $f(x)=-5(x-2)^2+20$ بيانياً، فما اتجاه فتحة المنحنى؟`,
+ o:['للأعلى','للأسفل','لليمين','لليسار'], a:1,
+ h:String.raw`$a=-5<0$ فالمنحنى مفتوح للأسفل، وهذا يؤكد أن للدالة قيمة عظمى.`},
+
+/* القسم 7: مقطع y */
+{sec:'مقطع y',
+ t:String.raw`ما مقطع $y$ للدالة $f(x)=3x^2-5x+7$؟`,
+ o:['$-5$','3','7','0'], a:2,
+ h:String.raw`في الصيغة القياسية $ax^2+bx+c$ مقطع $y$ يساوي $c=7$.`},
+{sec:'مقطع y',
+ t:String.raw`ما مقطع $y$ للدالة $g(x)=2(x-1)^2+3$؟`,
+ o:['3','5','2','1'], a:1,
+ h:String.raw`نعوّض $x=0$: $g(0)=2(0-1)^2+3=2+3=5$.`},
+
+/* القسم 8: جدول */
+{sec:'جدول لاستخراج الحلول',
+ t:String.raw`ما حلول المعادلة التربيعية المرتبطة بالجدول المجاور؟`,
+ table:{x:[0,1,2,3,4],y:[3,0,-1,0,3]},
+ o:[String.raw`$x=0,\ x=4$`,String.raw`$x=1,\ x=3$`,String.raw`$x=2$ فقط`,String.raw`$x=3,\ x=-1$`], a:1,
+ h:String.raw`الحلول هي قيم $x$ التي يكون عندها $f(x)=0$: عند $x=1$ وعند $x=3$.`},
+
+/* القسم 9: الحل بالتحليل */
+{sec:'الحل بالتحليل',
+ t:String.raw`حل المعادلة $x^2+3x-10=0$ بالتحليل إلى العوامل:`,
+ o:[String.raw`$\{5,-2\}$`,String.raw`$\{-5,2\}$`,String.raw`$\{-5,-2\}$`,String.raw`$\{5,2\}$`], a:1,
+ h:String.raw`نبحث عن عددين حاصل ضربهما $-10$ ومجموعهما $3$: $(x+5)(x-2)=0$.`},
+{sec:'الحل بالتحليل',
+ t:String.raw`حل المعادلة $x^2-9x+14=0$ بالتحليل إلى العوامل:`,
+ o:[String.raw`$\{2,7\}$`,String.raw`$\{-2,-7\}$`,String.raw`$\{-2,7\}$`,String.raw`$\{9,14\}$`], a:0,
+ h:String.raw`عددان حاصل ضربهما $14$ ومجموعهما $-9$: $(x-2)(x-7)=0$.`},
+
+/* القسم 10: إكمال المربع */
+{sec:'الحل بإكمال المربع',
+ t:String.raw`حل المعادلة $x^2+6x=7$ بإكمال المربع:`,
+ o:[String.raw`$\{-1,7\}$`,String.raw`$\{1,-7\}$`,String.raw`$\{-1,-7\}$`,String.raw`$\{1,7\}$`], a:1,
+ h:String.raw`نضيف $9$ للطرفين: $(x+3)^2=16\Rightarrow x+3=\pm4$، إذن $x=1$ أو $x=-7$.`},
+{sec:'الحل بإكمال المربع',
+ t:String.raw`حل المعادلة $x^2-8x=-12$ بإكمال المربع:`,
+ o:[String.raw`$\{-2,-6\}$`,String.raw`$\{4,2\}$`,String.raw`$\{2,6\}$`,String.raw`$\{-4,4\}$`], a:2,
+ h:String.raw`نضيف $16$ للطرفين: $(x-4)^2=4\Rightarrow x-4=\pm2$، إذن $x=6$ أو $x=2$.`},
+
+/* القسم 11: القانون العام */
+{sec:'القانون العام',
+ t:String.raw`حل المعادلة $x^2-6x+2=0$ باستعمال القانون العام:`,
+ o:[String.raw`$3\pm\sqrt7$`,String.raw`$-3\pm\sqrt7$`,String.raw`$6\pm\sqrt{28}$`,String.raw`$3\pm\sqrt{28}$`], a:0,
+ h:String.raw`$\Delta=36-8=28$، فيكون $x=\dfrac{6\pm\sqrt{28}}{2}=\dfrac{6\pm2\sqrt7}{2}=3\pm\sqrt7$.`},
+{sec:'القانون العام',
+ t:String.raw`حل المعادلة $2x^2+3x-5=0$ باستعمال القانون العام:`,
+ o:[String.raw`$\left\{1,-\tfrac52\right\}$`,String.raw`$\left\{-1,\tfrac52\right\}$`,String.raw`$\left\{1,\tfrac52\right\}$`,String.raw`$\left\{-1,-\tfrac52\right\}$`], a:0,
+ h:String.raw`$\Delta=9+40=49$، فيكون $x=\dfrac{-3\pm7}{4}$، أي $x=1$ أو $x=-\tfrac52$.`},
+{sec:'المميّز',
+ t:String.raw`ما قيمة المميّز للمعادلة $3x^2-2x+5=0$، وماذا تعني؟`,
+ o:[String.raw`$56$، حلان حقيقيان`,String.raw`$-56$، لا يوجد حلول حقيقية`,String.raw`$64$، حل حقيقي واحد`,String.raw`$-64$، حلان حقيقيان`], a:1,
+ h:String.raw`$\Delta=b^2-4ac=4-60=-56<0$، فلا يوجد حلول حقيقية.`}
+];
+
+/* ===================== منطق الاختبار ===================== */
+const LET=['A','B','C','D'];
+const app=document.getElementById('app');
+let st={name:'',i:0,ans:Array(Q.length).fill(null),screen:'start'};
+
+function typeset(){
+  if(window.renderMathInElement){
+    renderMathInElement(app,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});
+  }
+}
+window.addEventListener('load',()=>{typeset();});
+
+function tableHTML(t){
+  return '<table class="vt"><tr><th>$x$</th>'+t.x.map(v=>'<td>'+v+'</td>').join('')+'</tr><tr><th>$f(x)$</th>'+t.y.map(v=>'<td>'+v+'</td>').join('')+'</tr></table>';
+}
+function qBody(q){
+  let h='<div class="qtext">'+q.t+'</div>';
+  if(q.fig) h+='<div class="figure">'+q.fig()+'</div>';
+  if(q.table) h+=tableHTML(q.table);
+  return h;
+}
+
+function renderStart(){
+  app.innerHTML=`<div class="card">
+    <span class="badge">تعليمات</span>
+    <ul>
+      <li>الاختبار مكوّن من <b>${Q.length}</b> سؤالاً من نوع الاختيار من متعدد.</li>
+      <li>يغطي: الاتساع والإزاحة، قراءة الحلول من الرسم والجدول، الحل بالتحليل وإكمال المربع والقانون العام، تبسيط الجذور، أقصى ارتفاع، مقطع <span dir="ltr">y</span> والمميّز.</li>
+      <li>يمكنك التنقل بين الأسئلة وتغيير إجاباتك قبل التسليم النهائي.</li>
+      <li>تظهر النتيجة مع الحل المختصر لكل سؤال بعد التسليم.</li>
+    </ul>
+    <label for="nm"><b>اسم الطالب (اختياري):</b></label>
+    <input id="nm" class="name" type="text" placeholder="اكتب اسمك هنا" value="${st.name.replace(/"/g,'&quot;')}">
+    <div class="rowbtn"><button class="btn" id="go">ابدأ الاختبار</button></div>
+  </div>`;
+  document.getElementById('go').onclick=()=>{st.name=document.getElementById('nm').value.trim();st.i=0;st.screen='quiz';render();};
+}
+
+function renderQuiz(){
+  const q=Q[st.i], answered=st.ans.filter(v=>v!==null).length;
+  const pct=Math.round((st.i+1)/Q.length*100);
+  let h=`<div class="progress"><div style="width:${pct}%"></div></div>
+    <div class="pinfo"><span>السؤال ${st.i+1} من ${Q.length}</span><span>أُجيب عن ${answered} من ${Q.length}</span></div>
+    <div class="card">
+      <span class="badge">السؤال ${st.i+1}</span><span class="sec">${q.sec}</span>
+      ${qBody(q)}
+      <div class="opts">`;
+  q.o.forEach((o,k)=>{
+    h+=`<button class="opt ${st.ans[st.i]===k?'sel':''}" data-k="${k}"><span class="L">${LET[k]}</span><span class="T">${o}</span></button>`;
+  });
+  h+=`</div>
+      <div class="nav">
+        <button class="btn alt" id="prev" ${st.i===0?'disabled':''}>السابق</button>
+        ${st.i<Q.length-1?'<button class="btn" id="next">التالي</button>':'<button class="btn" id="finish">تسليم الاختبار</button>'}
+      </div>
+      <div class="dots">`;
+  Q.forEach((_,k)=>{h+=`<button class="dot ${st.ans[k]!==null?'ans':''} ${k===st.i?'cur':''}" data-j="${k}">${k+1}</button>`;});
+  h+=`</div></div>`;
+  app.innerHTML=h;
+  app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{st.ans[st.i]=+b.dataset.k;renderQuiz();typeset();});
+  app.querySelectorAll('.dot').forEach(b=>b.onclick=()=>{st.i=+b.dataset.j;render();});
+  const p=document.getElementById('prev'); if(p) p.onclick=()=>{st.i--;render();};
+  const n=document.getElementById('next'); if(n) n.onclick=()=>{st.i++;render();};
+  const f=document.getElementById('finish'); if(f) f.onclick=()=>{
+    const un=st.ans.filter(v=>v===null).length;
+    if(un>0 && !confirm('لديك '+un+' سؤال بلا إجابة. هل تريد التسليم الآن؟')) return;
+    st.screen='result';render();window.scrollTo(0,0);
+  };
+}
+
+function renderResult(){
+  let right=0,wrong=0,skip=0;
+  Q.forEach((q,i)=>{const a=st.ans[i]; if(a===null)skip++; else if(a===q.a)right++; else wrong++;});
+  const pct=Math.round(right/Q.length*100);
+  let msg=pct>=90?'ممتاز! أداء رائع.':pct>=75?'جيد جداً، راجع الأخطاء البسيطة.':pct>=50?'جيد، تحتاج إلى مزيد من التدريب.':'راجع الدروس وأعد المحاولة.';
+  let h=`<div class="card score">
+    ${st.name?'<div><b>الطالب: '+st.name.replace(/</g,'&lt;')+'</b></div>':''}
+    <div class="big">${right} / ${Q.length}</div>
+    <div class="pct">${pct}% — ${msg}</div>
+    <div class="summary"><div style="color:var(--ok)">صحيحة: ${right}</div><div style="color:var(--bad)">خاطئة: ${wrong}</div><div>بلا إجابة: ${skip}</div></div>
+    <div class="rowbtn"><button class="btn" id="retry">إعادة الاختبار</button><button class="btn alt" onclick="window.print()">طباعة النتيجة</button></div>
+  </div>
+  <h2 style="margin:20px 4px 8px">مراجعة الإجابات</h2>`;
+  Q.forEach((q,i)=>{
+    const a=st.ans[i], ok=a===q.a;
+    h+=`<div class="card rv ${ok?'ok':'no'}">
+      <span class="badge">السؤال ${i+1}</span><span class="sec">${q.sec}</span>
+      ${qBody(q)}
+      <div><span class="tag ${ok?'ok':'no'}">${ok?'إجابتك صحيحة ✓':(a===null?'لم تجب ✗':'إجابتك خاطئة ✗')}</span></div>
+      ${a!==null&&!ok?`<div>إجابتك: <b>${LET[a]}</b> ) ${q.o[a]}</div>`:''}
+      <div>الإجابة الصحيحة: <b>${LET[q.a]}</b> ) ${q.o[q.a]}</div>
+      <div class="hint"><b>الحل:</b> ${q.h}</div>
+    </div>`;
+  });
+  app.innerHTML=h;
+  document.getElementById('retry').onclick=()=>{st.ans=Array(Q.length).fill(null);st.i=0;st.screen='start';render();window.scrollTo(0,0);};
+}
+
+function render(){
+  if(st.screen==='start')renderStart();
+  else if(st.screen==='quiz')renderQuiz();
+  else renderResult();
+  typeset();
+  if(st.screen==='quiz')window.scrollTo({top:0,behavior:'smooth'});
+}
+render();
+</script>
+</body>
+</html>
